@@ -203,7 +203,7 @@ export class RegistrationRoutes {
          *       404:
          *         description: Inscripción no encontrada
 */
-        router.delete(":eventId/:userId", asyncHandler(controller.eliminar));
+        router.delete("/:eventId/:userId", asyncHandler(controller.eliminar));
         return router;
     }
 

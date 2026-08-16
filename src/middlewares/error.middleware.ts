@@ -55,6 +55,25 @@ export class ErrorMiddleware {
             return;
         }
 
+        const prismaError = error as { code?: string };
+        if (prismaError.code === "P2002") {
+            res.status(StatusCodes.CONFLICT).json({
+                success: false,
+                name: "ConflictError",
+                message: "El usuario ya está inscrito en este evento.",
+            });
+            return;
+        }
+
+        if (prismaError.code === "P2003") {
+            res.status(StatusCodes.BAD_REQUEST).json({
+                success: false,
+                name: "ForeignKeyError",
+                message: "El evento, usuario o estado seleccionado no existe.",
+            });
+            return;
+        }
+
         // 3. Manejo de Errores No Controlados / Inesperados
         logger.error({
             message: `[UnhandledError] ${errObj.message}`,
